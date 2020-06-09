@@ -4,6 +4,7 @@ import requests
 
 class ShowdownSocket:
     def __init__(self, _username):
+        super.__init__()
         self.ws = websocket.create_connection("ws://localhost:8000/showdown/websocket")
         self.username = _username
 
@@ -50,6 +51,11 @@ class ShowdownSocket:
         self.send_message('', message_list)
 
     def challenge_available_player(self):
+        # make agent pool 
+        # only activate half at a time
+
+        # 
+
         pass
 
     def get_state(self):
@@ -57,6 +63,12 @@ class ShowdownSocket:
             msg = self.ws.recv()
             if 'battle-gen' in msg:
                 return msg
+
+    def get_reward(self):
+        pass
+
+    def if_done(self):
+        pass
 
     def get_battletag(self):
         while True:
@@ -66,26 +78,22 @@ class ShowdownSocket:
                 battletag = battletag.replace('\n','')
                 return battletag
 
+    def pick_move(self, move):
+        tag = self.get_battletag
+        msg = "{}|/choose move {}".format(tag, str(move))
+        self.ws.send(msg)
+
+    def switch_pokemon(self, switch_target):
+        tag = self.get_battletag
+        msg = "{}|/switch {}".format(tag, str(switch_target))
+        self.ws.send(msg)
+
+
+    def leave_battle(self):
+        tag = self.get_battletag
+        msg = '|/leave '.append(tag)
+        self.ws.send(msg)
 
 
 
 
-
-
-
-'''import websockets
-import asyncio
-
-class testsocket: 
-    websocket = None
-
-    async def connect(self):
-        self.websocket =  await websockets.connect("ws://localhost:8000/showdown/websocket")
-
-    async def receive(self):
-        await self.connect()
-        return await self.websocket.recv()
-
-def export():
-    ts = testsocket()
-    return asyncio.get_event_loop().run_until_complete(ts.receive())'''
